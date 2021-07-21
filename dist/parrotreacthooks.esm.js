@@ -138,7 +138,7 @@ function useIsFocusVisible() {
     /**
      * 如果一个focus聚焦事件被触发，应该被调用
      */
-    function handleFocusVisible() {
+    function handleFocusVisible(event) {
         if (isFocusVisible(event)) {
             isFocusVisibleRef.current = true;
             return true;
