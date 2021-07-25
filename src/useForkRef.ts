@@ -16,7 +16,9 @@ export default function useForkRef<Instance>(
         }
         return (refValue: Instance | null)=>{
             for(let ref of refs){
-                setRef(ref,refValue)
+                if(ref){
+                    setRef(ref,refValue)
+                } 
             }
         }
     },[...refs])

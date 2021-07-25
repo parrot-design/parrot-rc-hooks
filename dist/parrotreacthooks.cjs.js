@@ -34,7 +34,9 @@ function useForkRef(...refs) {
         }
         return (refValue) => {
             for (let ref of refs) {
-                setRef(ref, refValue);
+                if (ref) {
+                    setRef(ref, refValue);
+                }
             }
         };
     }, [...refs]);
