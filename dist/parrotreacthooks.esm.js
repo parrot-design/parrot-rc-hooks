@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState, useRef, useEffect } from 'react';
 
 /**
  * 给节点设置值
@@ -148,4 +148,26 @@ function useIsFocusVisible() {
     return { isFocusVisibleRef, onFocus: handleFocusVisible, onBlur: handleBlurVisible, ref };
 }
 
-export { setRef, useForkRef, useIsFocusVisible };
+//更新完state以后的回调
+//与setState({a:2},()=>{})等价
+function useStateCallback(initial) {
+    const [state, setState] = useState(initial);
+    const asyncCallback = useRef();
+    const setStateWrapper = (nextState, next, prev) => {
+        if (typeof prev === 'function') {
+            //prevState
+            if (prev(state, nextState) === false) {
+                return;
+            }
+        }
+        asyncCallback.current = typeof next === 'function' ? next : null;
+        setState(nextState);
+    };
+    useEffect(() => {
+        if (asyncCallback.current)
+            asyncCallback.current(state);
+    }, [state]);
+    return [state, setStateWrapper];
+}
+
+export { setRef, useForkRef, useIsFocusVisible, useStateCallback };
