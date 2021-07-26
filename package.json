@@ -44,10 +44,7 @@
     "webpack": "^5.45.1",
     "webpack-dev-middleware": "^5.0.0",
     "webpack-hot-middleware": "^2.25.0"
-  },
-  "dependencies": {
-    "react": "^17.0.2"
-  },
+  }, 
   "peerDependencies": {
     "react": ">= 16.8"
   }
