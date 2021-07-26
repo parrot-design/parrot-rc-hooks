@@ -1,6 +1,6 @@
 {
   "name": "@parrotjs/react-hooks",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "",
   "main": "dist/parrotreacthooks.cjs.js",
   "module": "dist/parrotreacthooks.esm.js",
@@ -44,7 +44,7 @@
     "webpack": "^5.45.1",
     "webpack-dev-middleware": "^5.0.0",
     "webpack-hot-middleware": "^2.25.0"
-  }, 
+  },
   "peerDependencies": {
     "react": ">= 16.8"
   }
