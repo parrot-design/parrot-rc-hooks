@@ -1,11 +1,11 @@
 {
   "name": "@parrotjs/react-hooks",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "",
   "main": "dist/parrotreacthooks.cjs.js",
   "module": "dist/parrotreacthooks.esm.js",
-  "umd":"dist/parrotreacthooks.umd.js",
-  "umdName":"ParrotRcHooks",
+  "umd": "dist/parrotreacthooks.umd.js",
+  "umdName": "ParrotRcHooks",
   "types": "dist/types",
   "scripts": {
     "dev": "node examples/server.js",
@@ -49,6 +49,6 @@
     "react": "^17.0.2"
   },
   "peerDependencies": {
-    "react":">= 16.8"
+    "react": ">= 16.8"
   }
 }
