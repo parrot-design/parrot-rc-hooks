@@ -17,7 +17,7 @@ function setRef(ref, value) {
     if (typeof ref === 'function') {
         ref(value);
     }
-    else {
+    else if (!!ref && ref.current) {
         ref.current = value;
     }
 }
