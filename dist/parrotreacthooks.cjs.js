@@ -243,8 +243,50 @@ function useTouch() {
     };
 }
 
+const inBrowser = typeof window !== 'undefined';
+
+function useEventListener(type, listener, options) {
+    if (!inBrowser)
+        return;
+    //passive 监听器能保证的只有一点，那就是调用 preventDefault() 无效
+    const { target = window, passive = false, capture = false } = options || {};
+    let attached = false;
+    const add = React__default['default'].useCallback((target) => {
+        if (target && !attached) {
+            target.addEventListener(type, listener, capture);
+        }
+        attached = true;
+    }, [type, listener, passive, capture]);
+    const remove = React__default['default'].useCallback((target) => {
+        if (target && attached) {
+            target.removeEventListener(type, listener, capture);
+            attached = false;
+        }
+    }, [type, listener, passive, capture]);
+    React__default['default'].useEffect(() => {
+        add(target);
+        return () => {
+            remove(target);
+        };
+    }, [target]);
+}
+
+function usePageVisibility() {
+    const [visibility, setVisibility] = React__default['default'].useState('visible');
+    const setVisible = React__default['default'].useCallback(() => {
+        if (inBrowser) {
+            setVisibility(document.hidden ? 'hidden' : 'visible');
+        }
+    }, []);
+    useEventListener('visibilitychange', setVisible);
+    return visibility;
+}
+
+exports.inBrowser = inBrowser;
 exports.setRef = setRef;
+exports.useEventListener = useEventListener;
 exports.useForkRef = useForkRef;
 exports.useIsFocusVisible = useIsFocusVisible;
+exports.usePageVisibility = usePageVisibility;
 exports.useStateCallback = useStateCallback;
 exports.useTouch = useTouch;
