@@ -3,6 +3,7 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var React = require('react');
+var utils = require('@parrotjs/utils');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -243,10 +244,8 @@ function useTouch() {
     };
 }
 
-const inBrowser = typeof window !== 'undefined';
-
 function useEventListener(type, listener, options) {
-    if (!inBrowser)
+    if (!utils.inBrowser)
         return;
     //passive 监听器能保证的只有一点，那就是调用 preventDefault() 无效
     const { target = window, passive = false, capture = false } = options || {};
@@ -274,7 +273,7 @@ function useEventListener(type, listener, options) {
 function usePageVisibility() {
     const [visibility, setVisibility] = React__default['default'].useState('visible');
     const setVisible = React__default['default'].useCallback(() => {
-        if (inBrowser) {
+        if (utils.inBrowser) {
             setVisibility(document.hidden ? 'hidden' : 'visible');
         }
     }, []);
@@ -282,7 +281,6 @@ function usePageVisibility() {
     return visibility;
 }
 
-exports.inBrowser = inBrowser;
 exports.setRef = setRef;
 exports.useEventListener = useEventListener;
 exports.useForkRef = useForkRef;

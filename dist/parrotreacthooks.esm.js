@@ -1,4 +1,5 @@
 import React, { useCallback, useState, useRef, useEffect } from 'react';
+import { inBrowser } from '@parrotjs/utils';
 
 /**
  * 给节点设置值
@@ -235,8 +236,6 @@ function useTouch() {
     };
 }
 
-const inBrowser = typeof window !== 'undefined';
-
 function useEventListener(type, listener, options) {
     if (!inBrowser)
         return;
@@ -274,4 +273,4 @@ function usePageVisibility() {
     return visibility;
 }
 
-export { inBrowser, setRef, useEventListener, useForkRef, useIsFocusVisible, usePageVisibility, useStateCallback, useTouch };
+export { setRef, useEventListener, useForkRef, useIsFocusVisible, usePageVisibility, useStateCallback, useTouch };

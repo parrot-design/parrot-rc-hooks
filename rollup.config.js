@@ -22,12 +22,13 @@ export default {
             sourcemap: false, 
             //告诉全局变量React就是react
             globals:{
-                'react':'React'
+                'react':'React',
+                '@parrotjs/utils':'ParrotUtils'
             },
             plugins: [terser()],
         },
     ],
-    external:['react'], 
+    external:['react','@parrotjs/utils'], 
     plugins: [
         typescript({
             tsconfigOverride: {

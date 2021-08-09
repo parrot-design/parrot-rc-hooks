@@ -47,5 +47,8 @@
   },
   "peerDependencies": {
     "react": ">= 16.8"
+  },
+  "dependencies": {
+    "@parrotjs/utils": "0.0.3"
   }
 }

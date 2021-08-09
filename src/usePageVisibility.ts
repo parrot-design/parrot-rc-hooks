@@ -1,7 +1,7 @@
 
 import React from 'react';
 import useEventListener from './useEventListener';
-import { inBrowser } from './utils';
+import { inBrowser } from '@parrotjs/utils';
 
 export default function usePageVisibility(){
 

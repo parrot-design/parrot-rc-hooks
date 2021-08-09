@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { inBrowser } from './utils';
+import { inBrowser } from '@parrotjs/utils';
 
 //是否支持捕获
 export let supportsPassive = false;
