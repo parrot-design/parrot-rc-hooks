@@ -281,10 +281,36 @@ function usePageVisibility() {
     return visibility;
 }
 
+const useRect = (deps = []) => {
+    const [size, setSize] = React.useState({
+        width: 0, height: 0
+    });
+    const root = React.useRef(null);
+    const changeSize = () => {
+        var _a;
+        const rect = (_a = root.current) === null || _a === void 0 ? void 0 : _a.getBoundingClientRect();
+        if (rect) {
+            setSize({
+                width: rect.width,
+                height: rect.height
+            });
+        }
+    };
+    React.useEffect(() => {
+        changeSize();
+    }, deps);
+    return {
+        root,
+        size,
+        changeSize
+    };
+};
+
 exports.setRef = setRef;
 exports.useEventListener = useEventListener;
 exports.useForkRef = useForkRef;
 exports.useIsFocusVisible = useIsFocusVisible;
 exports.usePageVisibility = usePageVisibility;
+exports.useRect = useRect;
 exports.useStateCallback = useStateCallback;
 exports.useTouch = useTouch;

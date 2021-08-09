@@ -273,4 +273,29 @@ function usePageVisibility() {
     return visibility;
 }
 
-export { setRef, useEventListener, useForkRef, useIsFocusVisible, usePageVisibility, useStateCallback, useTouch };
+const useRect = (deps = []) => {
+    const [size, setSize] = useState({
+        width: 0, height: 0
+    });
+    const root = useRef(null);
+    const changeSize = () => {
+        var _a;
+        const rect = (_a = root.current) === null || _a === void 0 ? void 0 : _a.getBoundingClientRect();
+        if (rect) {
+            setSize({
+                width: rect.width,
+                height: rect.height
+            });
+        }
+    };
+    useEffect(() => {
+        changeSize();
+    }, deps);
+    return {
+        root,
+        size,
+        changeSize
+    };
+};
+
+export { setRef, useEventListener, useForkRef, useIsFocusVisible, usePageVisibility, useRect, useStateCallback, useTouch };
