@@ -298,4 +298,11 @@ const useRect = (deps = []) => {
     };
 };
 
-export { setRef, useEventListener, useForkRef, useIsFocusVisible, usePageVisibility, useRect, useStateCallback, useTouch };
+//销毁时的钩子
+function useDestory(fn) {
+    React.useEffect(() => {
+        return fn;
+    }, []);
+}
+
+export { setRef, useDestory, useEventListener, useForkRef, useIsFocusVisible, usePageVisibility, useRect, useStateCallback, useTouch };

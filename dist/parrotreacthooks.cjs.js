@@ -306,7 +306,15 @@ const useRect = (deps = []) => {
     };
 };
 
+//销毁时的钩子
+function useDestory(fn) {
+    React__default['default'].useEffect(() => {
+        return fn;
+    }, []);
+}
+
 exports.setRef = setRef;
+exports.useDestory = useDestory;
 exports.useEventListener = useEventListener;
 exports.useForkRef = useForkRef;
 exports.useIsFocusVisible = useIsFocusVisible;
