@@ -1,6 +1,6 @@
 {
   "name": "@parrotjs/react-hooks",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "",
   "main": "dist/parrotreacthooks.cjs.js",
   "module": "dist/parrotreacthooks.esm.js",
