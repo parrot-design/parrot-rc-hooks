@@ -7,3 +7,4 @@ export { default as useEventListener } from './useEventListener';
 export { default as usePageVisibility } from './usePageVisibility';
 export { default as useRect } from './useRect';
 export { default as useDestory } from './useDestory';
+export { default as useResizeObserver } from './useResizeObserver';

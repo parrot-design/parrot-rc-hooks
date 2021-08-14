@@ -7,7 +7,28 @@ var utils = require('@parrotjs/utils');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
+function _interopNamespace(e) {
+    if (e && e.__esModule) return e;
+    var n = Object.create(null);
+    if (e) {
+        Object.keys(e).forEach(function (k) {
+            if (k !== 'default') {
+                var d = Object.getOwnPropertyDescriptor(e, k);
+                Object.defineProperty(n, k, d.get ? d : {
+                    enumerable: true,
+                    get: function () {
+                        return e[k];
+                    }
+                });
+            }
+        });
+    }
+    n['default'] = e;
+    return Object.freeze(n);
+}
+
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
+var React__namespace = /*#__PURE__*/_interopNamespace(React);
 
 /**
  * 给节点设置值
@@ -313,6 +334,81 @@ function useDestory(fn) {
     }, []);
 }
 
+function useResizeObserver({ ref, onResize: resizeHandler, disabled, }) {
+    const observerRef = React__namespace.useRef();
+    const elementRef = React__namespace.useRef();
+    const [height, setHeight] = React__namespace.useState(0);
+    const [width, setWidth] = React__namespace.useState(0);
+    const [offsetHeight, setOffsetHeight] = React__namespace.useState(0);
+    const [offsetWidth, setOffsetWidth] = React__namespace.useState(0);
+    const destroyObserver = React__namespace.useCallback(() => {
+        if (observerRef.current) {
+            observerRef.current.disconnect();
+            observerRef.current = null;
+        }
+    }, [observerRef]);
+    const onResize = React__namespace.useCallback((entries) => {
+        const target = entries[0].target;
+        const { width: _width, height: _height } = target.getBoundingClientRect();
+        const { offsetWidth: _offsetWidth, offsetHeight: _offsetHeight } = target;
+        /**
+         * Resize observer trigger when content size changed.
+         * In most case we just care about element size,
+         * let's use `boundary` instead of `contentRect` here to avoid shaking.
+         */
+        const fixedWidth = Math.floor(_width);
+        const fixedHeight = Math.floor(_height);
+        if (width !== fixedWidth ||
+            height !== fixedHeight ||
+            offsetWidth !== _offsetWidth ||
+            offsetHeight !== _offsetHeight) {
+            setHeight(fixedHeight);
+            setWidth(fixedWidth);
+            setOffsetHeight(_offsetHeight);
+            setOffsetWidth(_offsetWidth);
+            if (resizeHandler) {
+                Promise.resolve().then(() => {
+                    resizeHandler({
+                        width: fixedWidth,
+                        height: fixedHeight,
+                        offsetWidth: _offsetWidth,
+                        offsetHeight: _offsetHeight,
+                    }, target);
+                });
+            }
+        }
+    }, [width, height, offsetWidth, offsetHeight, resizeHandler]);
+    const repopulateObserver = React__namespace.useCallback(() => {
+        if (disabled) {
+            destroyObserver();
+            return;
+        }
+        const element = ref.current;
+        const elementChanged = element !== elementRef.current;
+        if (elementChanged) {
+            destroyObserver();
+            elementRef.current = element;
+        }
+        if (!observerRef.current && element) {
+            observerRef.current = new ResizeObserver(onResize);
+            observerRef.current.observe(element);
+        }
+    }, [destroyObserver, disabled, onResize, ref]);
+    React__namespace.useEffect(() => {
+        repopulateObserver();
+        // eslint-disable-next-line consistent-return
+        return () => {
+            destroyObserver();
+        };
+    }, [repopulateObserver, destroyObserver]);
+    return {
+        width,
+        height,
+        offsetWidth,
+        offsetHeight,
+    };
+}
+
 exports.setRef = setRef;
 exports.useDestory = useDestory;
 exports.useEventListener = useEventListener;
@@ -320,5 +416,6 @@ exports.useForkRef = useForkRef;
 exports.useIsFocusVisible = useIsFocusVisible;
 exports.usePageVisibility = usePageVisibility;
 exports.useRect = useRect;
+exports.useResizeObserver = useResizeObserver;
 exports.useStateCallback = useStateCallback;
 exports.useTouch = useTouch;
