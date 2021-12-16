@@ -1,17 +1,17 @@
-import React ,{ useRef,useEffect } from 'react';
-import { usePageVisibility } from '../../src'
+import React ,{ useState } from 'react';
+import { usePrevious } from '../../src'
 
 const Demo = () => {
 
-    const visibility=usePageVisibility();
+    const [count,setCount]=useState(0);
 
-    useEffect(() => {
-        console.log("visibility",visibility)
-    }, [visibility])
+    const lastCount=usePrevious(count); 
      
     return (
         <div> 
-            
+            <button onClick={()=>setCount(count+1)}>加入购物车</button>
+            <div>现在的值：{count}</div>
+            <div>上次的值：{lastCount}</div>
         </div>
     )
 }

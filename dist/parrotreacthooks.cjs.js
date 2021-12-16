@@ -409,12 +409,24 @@ function useResizeObserver({ ref, onResize: resizeHandler, disabled, }) {
     };
 }
 
+function usePrevious(state, compare = true) {
+    const previous = React.useRef();
+    React.useEffect(() => {
+        const needUpdate = typeof compare === 'function' ? compare(previous.current, state) : compare;
+        if (needUpdate) {
+            previous.current = state;
+        }
+    });
+    return previous.current;
+}
+
 exports.setRef = setRef;
 exports.useDestory = useDestory;
 exports.useEventListener = useEventListener;
 exports.useForkRef = useForkRef;
 exports.useIsFocusVisible = useIsFocusVisible;
 exports.usePageVisibility = usePageVisibility;
+exports.usePrevious = usePrevious;
 exports.useRect = useRect;
 exports.useResizeObserver = useResizeObserver;
 exports.useStateCallback = useStateCallback;

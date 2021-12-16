@@ -8,3 +8,4 @@ export { default as usePageVisibility } from './usePageVisibility';
 export { default as useRect } from './useRect';
 export { default as useDestory } from './useDestory';
 export { default as useResizeObserver } from './useResizeObserver';
+export { default as usePrevious } from './usePrevious';

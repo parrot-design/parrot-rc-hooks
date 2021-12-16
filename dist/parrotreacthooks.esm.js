@@ -381,4 +381,15 @@ function useResizeObserver({ ref, onResize: resizeHandler, disabled, }) {
     };
 }
 
-export { setRef, useDestory, useEventListener, useForkRef, useIsFocusVisible, usePageVisibility, useRect, useResizeObserver, useStateCallback, useTouch };
+function usePrevious(state, compare = true) {
+    const previous = useRef();
+    useEffect(() => {
+        const needUpdate = typeof compare === 'function' ? compare(previous.current, state) : compare;
+        if (needUpdate) {
+            previous.current = state;
+        }
+    });
+    return previous.current;
+}
+
+export { setRef, useDestory, useEventListener, useForkRef, useIsFocusVisible, usePageVisibility, usePrevious, useRect, useResizeObserver, useStateCallback, useTouch };
