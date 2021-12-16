@@ -1,19 +1,24 @@
 import React ,{ useState } from 'react';
-import { usePrevious } from '../../src'
+import { usePrevious,useUpdate } from '../../src'
 
 const Demo = () => {
 
-    const [count,setCount]=useState(0);
-
-    const lastCount=usePrevious(count); 
+    const update=useUpdate(); 
      
+    console.log("===demo render===")
+
     return (
-        <div> 
-            <button onClick={()=>setCount(count+1)}>加入购物车</button>
-            <div>现在的值：{count}</div>
-            <div>上次的值：{lastCount}</div>
+        <div>  
+            <Children forceUpdate={update} />
         </div>
     )
 }
+
+const Children=React.memo((props:any)=>{
+    console.log("===Children")
+    return (
+        <div onClick={props.forceUpdate}>forceUpdate</div>
+    )
+})
 
 export default Demo;

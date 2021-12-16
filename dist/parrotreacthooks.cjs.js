@@ -420,6 +420,11 @@ function usePrevious(state, compare = true) {
     return previous.current;
 }
 
+function useUpdate() {
+    const [, forceUpdate] = React.useState();
+    return React.useCallback(() => forceUpdate({}), []);
+}
+
 exports.setRef = setRef;
 exports.useDestory = useDestory;
 exports.useEventListener = useEventListener;
@@ -431,3 +436,4 @@ exports.useRect = useRect;
 exports.useResizeObserver = useResizeObserver;
 exports.useStateCallback = useStateCallback;
 exports.useTouch = useTouch;
+exports.useUpdate = useUpdate;

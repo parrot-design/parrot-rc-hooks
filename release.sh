@@ -2,6 +2,8 @@
 set -e
 echo "Enter release version: "
 read VERSION
+echo "Enter commit: "
+read COMMIT
 read -p "Releasing $VERSION - are you sure? (y/n)" -n 1 -r
 echo  # (optional) move to a new line
 if [[ $REPLY =~ ^[Yy]$ ]]
@@ -10,7 +12,7 @@ then
 
   # commit
   git add -A
-  git commit -m "[build] $VERSION"
+  git commit -m "[build] $VERSION $COMMIT"
   npm version $VERSION --message "[release] $VERSION" #修改package version版本
   git push origin main
 

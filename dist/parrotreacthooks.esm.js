@@ -392,4 +392,9 @@ function usePrevious(state, compare = true) {
     return previous.current;
 }
 
-export { setRef, useDestory, useEventListener, useForkRef, useIsFocusVisible, usePageVisibility, usePrevious, useRect, useResizeObserver, useStateCallback, useTouch };
+function useUpdate() {
+    const [, forceUpdate] = useState();
+    return useCallback(() => forceUpdate({}), []);
+}
+
+export { setRef, useDestory, useEventListener, useForkRef, useIsFocusVisible, usePageVisibility, usePrevious, useRect, useResizeObserver, useStateCallback, useTouch, useUpdate };
