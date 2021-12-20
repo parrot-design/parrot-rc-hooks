@@ -1,24 +1,24 @@
-import React ,{ useState } from 'react';
-import { usePrevious,useUpdate } from '../../src'
+import React from 'react';
+import { useBoolean } from 'ahooks';
 
-const Demo = () => {
+export default () => {
 
-    const update=useUpdate(); 
-     
-    console.log("===demo render===")
+  const [state, { toggle, setTrue, setFalse }] = useBoolean(true);
 
-    return (
-        <div>  
-            <Children forceUpdate={update} />
-        </div>
-    )
-}
-
-const Children=React.memo((props:any)=>{
-    console.log("===Children")
-    return (
-        <div onClick={props.forceUpdate}>forceUpdate</div>
-    )
-})
-
-export default Demo;
+  return (
+    <div>
+      <p>Effects：{JSON.stringify(state)}</p>
+      <p>
+        <button type="button" onClick={toggle}>
+          Toggle
+        </button>
+        <button type="button" onClick={setFalse} style={{ margin: '0 16px' }}>
+          Set false
+        </button>
+        <button type="button" onClick={setTrue}>
+          Set true
+        </button>
+      </p>
+    </div>
+  );
+};

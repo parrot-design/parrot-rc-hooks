@@ -7,21 +7,52 @@
 > 保存上一次状态(state/memoized值)
 ### 实际场景
 
-> 在购物车数量加减时，需要判断上次的数量和这次的数量，进行对比，然后判断是请求加入购物车接口还是移除购物车接口。
+> 在购物车数量加减时，需要判断上次的数量和这次的数量，进行对比，然后判断是请求加入购物车接口还是移除购物车接口。(实际中可能是1个接口)
+
+```js
+//使用伪代码
+import React,{ useState,useEffect } from 'react';
+import { usePrevious } from '@parrotjs/react-hooks';
+
+const Demo=()=>{
+    //默认购物车有一件商品
+    const [count,setCount]=useState(1);
+    //上一个数量
+    const prevCount=usePrevious(count);
+
+    useEffect(()=>{
+        //usePrevious默认值为undefined 初始化时不请求任何接口
+        if(prevCount===undefined) return ;
+        if(count>prevCount) {
+            //请求添加购物车接口
+        }else{
+            //请求移除购物车接口
+        }
+    },[count]);
+
+    return (
+        <>
+            <button onClick={()=>setCount(count+1)}>加入购物车</button>
+            <button onClick={()=>setCount(count-1)}>移除购物车</button>
+        <>
+    )
+}
+
+export default Demo;
+```
 
 ### 代码
 
 ```js
-export default function usePrevious<T>(state:T){
+export default function usePrevious(state){
     //使用useRef可以记录值 且不会被渲染重置 首次肯定为undefined 故不传值
-    const previous=useRef<T>();
+    const previous=useRef();
     //每次渲染后都会执行
     useEffect(()=>{
         previous.current=state;
     });
     //可以获取到上一轮渲染的值
     return previous.current;
-    
 }
 ```
 
@@ -32,16 +63,14 @@ export default function usePrevious<T>(state:T){
 > 上面这种写法即使上次的值没有发生任何改变，也会更新。这种做法实际上是可以优化的，即当上次更新的值和这次的一样，则不进行赋值操作。
 
 ```js
-import React,{ useRef,useEffect } from 'react';
+import React,{ useRef,useEffect } from 'react'; 
 
-export type compareFuncType<T>=(prev:T|undefined,next:T)=>boolean 
+export default function usePrevious(
+    state,
+    compare= true
+){
 
-export default function usePrevious<T>(
-    state:T,
-    compare:compareFuncType<T> | boolean = true
-):T | undefined{
-
-    const previous=useRef<T>();
+    const previous=useRef();
 
     useEffect(()=>{
         
@@ -69,6 +98,35 @@ export default function usePrevious<T>(
 ### 实际场景
 
 > 如下图，今年11月出台的个保法需要软件公司增加隐私协议，当用户点击同意时需要强制刷新。
+
+```js
+//伪代码
+import React ,{useCallback,useState,useEffect} from 'react';
+import { useUpdate } from '@parrotjs/react-hooks';
+
+const Demo=()=>{
+    //隐私弹框显示隐藏 
+    const [visible,setVisible]=useState(false);
+    const update=useUpdate();
+    //点击同意
+    const handleAgree=useCallback(()=>{
+        update();
+        setVisible(false);
+    },[]);
+
+    useEffect(()=>{
+        setVisible(true);
+    },[]);
+
+    return (
+        <>
+            {visible && <Tankuang onAgree={handleAgree}>}
+        </>
+    )
+}
+
+export default Demo;
+```
 
 ### 代码
 
@@ -101,4 +159,53 @@ export default function useUpdate(){
 }
 ```
 
+## useBoolean
 
+### 作用
+
+> 使其管理boolean值更有逼格
+
+### 实际场景
+
+> 接着还是使用上面的例子，里面的隐私弹框开启关闭可以使用这个hook进行代码的优雅美化。
+
+### 代码
+
+```js
+import { useState,useCallback } from 'react';
+
+export default function useBoolean(defaultValue:boolean){
+
+    const [bool,setBool]=useState(defaultValue);
+
+    const toggle=useCallback(
+        () => {
+            setBool(!bool);
+        },
+        [bool]
+    );
+
+    const setTrue=useCallback(
+        () => {
+            setBool(true);
+        },
+        []
+    )
+
+    const setFalse=useCallback(
+        () => {
+            setBool(false);
+        },
+        []
+    )
+
+    return [
+        bool,
+        {
+            toggle,
+            setTrue,
+            setFalse
+        }
+    ]
+}
+```

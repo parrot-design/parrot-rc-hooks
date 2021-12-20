@@ -397,4 +397,25 @@ function useUpdate() {
     return useCallback(() => forceUpdate({}), []);
 }
 
-export { setRef, useDestory, useEventListener, useForkRef, useIsFocusVisible, usePageVisibility, usePrevious, useRect, useResizeObserver, useStateCallback, useTouch, useUpdate };
+function useBoolean(defaultValue) {
+    const [bool, setBool] = useState(defaultValue);
+    const toggle = useCallback(() => {
+        setBool(!bool);
+    }, [bool]);
+    const setTrue = useCallback(() => {
+        setBool(true);
+    }, []);
+    const setFalse = useCallback(() => {
+        setBool(false);
+    }, []);
+    return [
+        bool,
+        {
+            toggle,
+            setTrue,
+            setFalse
+        }
+    ];
+}
+
+export { setRef, useBoolean, useDestory, useEventListener, useForkRef, useIsFocusVisible, usePageVisibility, usePrevious, useRect, useResizeObserver, useStateCallback, useTouch, useUpdate };

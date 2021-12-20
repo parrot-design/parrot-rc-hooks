@@ -425,7 +425,29 @@ function useUpdate() {
     return React.useCallback(() => forceUpdate({}), []);
 }
 
+function useBoolean(defaultValue) {
+    const [bool, setBool] = React.useState(defaultValue);
+    const toggle = React.useCallback(() => {
+        setBool(!bool);
+    }, [bool]);
+    const setTrue = React.useCallback(() => {
+        setBool(true);
+    }, []);
+    const setFalse = React.useCallback(() => {
+        setBool(false);
+    }, []);
+    return [
+        bool,
+        {
+            toggle,
+            setTrue,
+            setFalse
+        }
+    ];
+}
+
 exports.setRef = setRef;
+exports.useBoolean = useBoolean;
 exports.useDestory = useDestory;
 exports.useEventListener = useEventListener;
 exports.useForkRef = useForkRef;

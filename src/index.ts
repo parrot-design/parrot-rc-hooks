@@ -10,3 +10,4 @@ export { default as useDestory } from './useDestory';
 export { default as useResizeObserver } from './useResizeObserver';
 export { default as usePrevious } from './usePrevious';
 export { default as useUpdate } from './useUpdate';
+export { default as useBoolean } from './useBoolean';
